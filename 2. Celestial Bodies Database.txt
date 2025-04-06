@@ -1,0 +1,168 @@
+Instructions
+For this project, you need to log in to PostgreSQL with psql to create your database. Do that by entering psql --username=freecodecamp --dbname=postgres in the terminal. Make all the tests below pass to complete the project. Be sure to get creative, and have fun!
+
+Don't forget to connect to your database after you create it 😄
+
+Here's some ideas for other column and table names: description, has_life, is_spherical, age_in_millions_of_years, planet_types, galaxy_types, distance_from_earth.
+
+Notes:
+If you leave your virtual machine, your database may not be saved. You can make a dump of it by entering pg_dump -cC --inserts -U freecodecamp universe > universe.sql in a bash terminal (not the psql one). It will save the commands to rebuild your database in universe.sql. The file will be located where the command was entered. If it's anything inside the project folder, the file will be saved in the VM. You can rebuild the database by entering psql -U postgres < universe.sql in a terminal where the .sql file is.
+
+If you are saving your progress on freeCodeCamp.org, after getting all the tests to pass, follow the instructions above to save a dump of your database. Save the universe.sql file in a public repository and submit the URL to it on freeCodeCamp.org.
+
+
+
+Complete the tasks below:
+
+You should use the INT data type for at least two columns that are not a primary or foreign key
+
+You should use the NUMERIC data type at least once
+
+You should use the TEXT data type at least once
+
+You should use the BOOLEAN data type on at least two columns
+
+Each "star" should have a foreign key that references one of the rows in galaxy
+
+Each "planet" should have a foreign key that references one of the rows in star
+
+Each "moon" should have a foreign key that references one of the rows in planet
+
+Your database should have at least five tables
+
+Each table should have at least three rows
+
+The galaxy and star tables should each have at least six rows
+
+The planet table should have at least 12 rows
+
+The moon table should have at least 20 rows
+
+Each table should have at least three columns
+
+The galaxy, star, planet, and moon tables should each have at least five columns
+
+At least two columns per table should not accept NULL values
+
+At least one column from each table should be required to be UNIQUE
+
+All columns named name should be of type VARCHAR
+
+
+Each foreign key column should have the same name as the column it is referencing
+
+psql --username=freecodecamp --dbname=postgres
+create database universe;
+\c universe
+create table galaxy();
+create table star();
+create table planet();
+create table moon();
+
+alter table galaxy add column galaxy_id serial PRIMARY KEY;
+alter table star add column star_id serial PRIMARY KEY;
+alter table planet add column planet_id serial PRIMARY KEY;
+alter table moon add column moon_id serial PRIMARY KEY;
+
+alter table galaxy add column name varchar(200) not null;
+alter table star add column name varchar(200) not null;
+alter table planet add column name varchar(200) not null;
+alter table moon add column name varchar(200) not null;
+
+alter table galaxy add column age_in_millions_of_years int;
+alter table galaxy add column distance_from_earth int;
+alter table star add column age_in_millions_of_years int;
+alter table star add column distance_from_earth int;
+alter table planet add column age_in_millions_of_years int;
+alter table planet add column distance_from_earth int;
+alter table moon add column age_in_millions_of_years int;
+alter table moon add column distance_from_earth int;
+
+alter table galaxy add column some_numeric numeric(3);
+alter table star add column some_numeric numeric(3);
+alter table planet add column some_numeric numeric(3);
+alter table moon add column some_numeric numeric(3);
+
+alter table galaxy add column description text;
+alter table star add column description text;
+alter table planet add column description text;
+alter table moon add column description text;
+
+alter table galaxy add column has_life boolean;
+alter table galaxy add column is_spherical boolean;
+alter table star add column has_life boolean;
+alter table star add column is_spherical boolean;
+alter table planet add column has_life boolean;
+alter table planet add column is_spherical boolean;
+alter table moon add column has_life boolean;
+alter table moon add column is_spherical boolean;
+
+
+alter table star add column galaxy_id INT NOT NULL REFERENCES galaxy(galaxy_id);
+insert into galaxy(name, description) values ('Milky Way', 'The Milky Way is the galaxy that includes the Solar System, with the name describing the galaxy''s appearance from Earth');
+insert into star(name, galaxy_id) values ('Sun', 1);
+alter table planet add column star_id INT NOT NULL REFERENCES star(star_id);
+insert into planet(name, star_id) values ('Earth', 1);
+alter table moon add column planet_id INT NOT NULL REFERENCES planet(planet_id);
+insert into moon(name, planet_id) values ('Moon', 1);
+
+
+create table galaxy_types();
+alter table galaxy_types add column galaxy_types_id serial PRIMARY KEY;
+alter table galaxy_types add column name varchar(200);
+alter table galaxy_types add column description text;
+
+insert into galaxy_types(name) values ('Spiral galaxy');
+insert into galaxy_types(name) values ('Round galaxy');
+insert into galaxy_types(name) values ('Square galaxy');
+insert into galaxy(name, description) values ('Orion', 'Orion galaxy');
+insert into galaxy(name, description) values ('Andromeda', 'Orion galaxy');
+insert into star(name, galaxy_id) values ('Sun', 2);
+insert into star(name, galaxy_id) values ('Sun', 3);
+insert into planet(name, star_id) values ('Earth', 2);
+insert into planet(name, star_id) values ('Earth', 3);
+insert into moon(name, planet_id) values ('Moon', 2);
+insert into moon(name, planet_id) values ('Moon', 3);
+
+insert into galaxy(name, description) values ('Gal4', 'Gal4');
+insert into galaxy(name, description) values ('Gal5', 'Gal5');
+insert into galaxy(name, description) values ('Gal6', 'Gal6');
+insert into star(name, galaxy_id) values ('Sun', 4);
+insert into star(name, galaxy_id) values ('Sun', 5);
+insert into star(name, galaxy_id) values ('Sun', 6);
+
+insert into planet(name, star_id) values ('Earth', 4);
+insert into planet(name, star_id) values ('Earth', 5);
+insert into planet(name, star_id) values ('Earth', 6);
+insert into planet(name, star_id) values ('Earth2', 1);
+insert into planet(name, star_id) values ('Earth2', 2);
+insert into planet(name, star_id) values ('Earth2', 3);
+insert into planet(name, star_id) values ('Earth2', 4);
+insert into planet(name, star_id) values ('Earth2', 5);
+insert into planet(name, star_id) values ('Earth2', 6);
+
+insert into moon(name, planet_id) values ('Moon', 4);
+insert into moon(name, planet_id) values ('Moon', 5);
+insert into moon(name, planet_id) values ('Moon', 6);
+insert into moon(name, planet_id) values ('Moon', 7);
+insert into moon(name, planet_id) values ('Moon', 8);
+insert into moon(name, planet_id) values ('Moon', 9);
+insert into moon(name, planet_id) values ('Moon', 10);
+insert into moon(name, planet_id) values ('Moon', 11);
+insert into moon(name, planet_id) values ('Moon', 12);
+insert into moon(name, planet_id) values ('Moon2', 1);
+insert into moon(name, planet_id) values ('Moon2', 2);
+insert into moon(name, planet_id) values ('Moon2', 3);
+insert into moon(name, planet_id) values ('Moon2', 4);
+insert into moon(name, planet_id) values ('Moon2', 5);
+insert into moon(name, planet_id) values ('Moon2', 6);
+insert into moon(name, planet_id) values ('Moon2', 7);
+insert into moon(name, planet_id) values ('Moon2', 8);
+
+
+ALTER TABLE galaxy_types ALTER COLUMN name SET NOT NULL;
+ALTER TABLE galaxy_types ADD UNIQUE(galaxy_types_id);
+ALTER TABLE galaxy ADD UNIQUE(galaxy_id);
+ALTER TABLE moon ADD UNIQUE(moon_id);
+ALTER TABLE planet ADD UNIQUE(planet_id);
+ALTER TABLE star ADD UNIQUE(star_id);
